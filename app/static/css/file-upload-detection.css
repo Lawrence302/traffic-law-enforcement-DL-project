@@ -1,0 +1,64 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.backBtn{
+    position: absolute;
+    top: 5px; 
+    left: 5px;
+    padding: 5px;
+    text-decoration: none;
+    color : white;
+    background-color: #333;
+    
+    font-size: 1.2rem;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+.display-container{
+    display: flex;
+    /* justify-content: space-between; */
+    margin-top: 20px;
+    max-height: 80vh;
+    
+    border: 2px solid #333;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+.original-file, 
+.processed-file { 
+    border: 1px solid black;
+    padding:1px;
+    max-width: 50%;
+    height: auto;
+    flex: 1;
+    
+}
+
+.original-file img,
+.processed-file img,
+.processed-file .video,
+.original-file .video{
+    width: 100%;
+    height: 100%;
+}
+
+.video-controls{
+    border: 3px solid green;
+    max-width: 100%;
+
+}
+
+#startProcessingVideo{
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+
+.info-container{
+    border: 2px solid #333
+}

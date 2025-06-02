@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Traffic Project {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h1 class="title"> Bike , Rider and Helmet Detection System For Traffic Law Enforcement</h1>
+    </div>
+    <div class="hero">
+        <div class="video-container">
+            <video autoplay loop muted>
+                <source src="{{ url_for('static', filename='home_video/sample.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+    <div class="service-options-info">
+            <div class="info-option" >
+                <h2> Our Services </h2>
+                <!-- <img src="{{ url_for('static', filename='img_5.jpg') }}" alt="Image"><br/> -->
+                
+                <p> Mainly we offer object detection related to motocycle riders safety <br/>     
+                    <a href="{{ url_for('about') }}" class="know-more-btn"> Know More about the service </a>
+
+                </p>
+            </div>
+            <div class="service-options">
+                <div class="option">
+                    <h3> bike, helmet, rider detection (Live) </h3>
+                    <p> You should make sure you have a second camera connected for the service to work. 
+                        if your camera is available then you are ready to go 
+                    </p>
+                    <a href="{{ url_for('video_routes.live_detection') }}" class="btn"> Start Live Detection </a>
+                </div>
+                <div class="option">
+                    <h3> bike, helmet, rider detection (Existing Image / Video File) </h3>
+                    <p> You can upload an existing image or video file and then run inference on the image or video file </p>
+                    <a href="{{ url_for('upload_route.upload_page') }}" class="btn"> Start Detection on uploaded file </a>
+                </div>
+            
+            </div>
+        
+    </div>
+    <div class="last-box"></div>
+
+    <script>
+        document.querySelector('video').addEventListener('contextmenu', function(e) {
+            e.preventDefault();  // Disable right-click to prevent fullscreen
+        });
+
+    </script>
+{% endblock %}

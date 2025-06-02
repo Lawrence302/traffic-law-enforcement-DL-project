@@ -1,0 +1,51 @@
+# Ignore Python virtual environment
+env/
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Ignore database files
+*.db
+
+# Ignore model files
+*.pt
+*.pth
+
+# Ignore image and video files (recursively)
+**/*.jpg
+**/*.jpeg
+**/*.png
+**/*.mp4
+**/*.avi
+**/*.mov
+
+# Ignore annotation or detection output images/videos (optional, customize as needed)
+
+runs/
+
+# Preserve folder structure under output/, ignore only media
+!output/
+!output/**/
+output/**/*.jpg
+output/**/*.jpeg
+output/**/*.png
+output/**/*.mp4
+output/**/*.avi
+output/**/*.mov
+
+# Ignore Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# VSCode or PyCharm config folders (optional)
+.vscode/
+.idea/
+
+# YOLOv5 repo 
+
+yolov5/

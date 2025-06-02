@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %} Live-detection {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/live-detection.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="live-page-container">
+    
+    <!-- Live video stream -->
+     <div class="stream-area">
+        <div class="live-video">
+            <h2>Live Video </h2>
+            <img class="stream" src="{{ url_for('video_routes.video_feed') }}" alt="Video Stream" />
+        </div>
+        <!-- Buttons to start and stop recording -->
+         <div class="stream-controls">
+            <button onclick="startRecording()">Start Recording</button>
+            <button onclick="stopRecording()">Stop Recording</button>
+        </div>
+        <!-- Status message area -->
+        <div id="status-message" ></div>
+
+    </div>   
+    <div class="vid-info">
+        <h2>detection info</h2>
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Function to start recording
+    function startRecording() {
+        fetch('/video/start_video')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status-message').innerText = data.status;
+            })
+            .catch(error => {
+                document.getElementById('status-message').innerText = "Error starting recording";
+                console.error("Error:", error);
+            });
+    }
+
+    // Function to stop recording
+    function stopRecording() {
+        fetch('/video/stop_video')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status-message').innerText = data.status;
+            })
+            .catch(error => {
+                document.getElementById('status-message').innerText = "Error stopping recording";
+                console.error("Error:", error);
+            });
+    }
+
+    // saves the data when user tries to leave or reload the page 
+    window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        // Send a request to stop recording when the user tries to leave or reload the page
+        fetch('/video/stop_video')
+        .then(response => {
+            return response.json();
+        }).then(data => {
+            console.log('Cleanup response:', data);
+        });
+    });
+</script>
+{% endblock %}

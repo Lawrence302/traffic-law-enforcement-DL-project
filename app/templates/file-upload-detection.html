@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %} Traffic Project {% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/file-upload-detection.css')}}">
+{% endblock %}
+
+{% block content %}
+    <a href="#" class="backBtn">Back</a>
+    <div class="display-container">
+        {% if is_video %}
+            
+            <div class="original-file">
+                <video class="video-controls" controls>
+                    <source class="video"  src="{{url_for('static', filename='uploads/videos/' + filename )}}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="processed-file">
+                 
+                <img id="stream" src="#" alt="output stream">
+            </div>
+        {% elif is_image %}
+            
+            <div class="original-file">
+                <img src="{{url_for('static', filename='uploads/images/' + filename )}}" alt="{{filename}}" >
+            </div>
+            <div class="processed-file">
+                <img id="processedImage" src="#" alt="{{filename}}" >
+
+            </div>
+        {% endif %}
+    </div>
+    <div class="actions">
+        {% if is_video %}
+            <!-- <a href="{{url_for('video_routes.start_upload_video_processing')}}" class="btn"> Start processing </a> -->
+             <button id="startProcessingVideo"> Start Processing </button>
+             
+             
+            <a href="{{url_for('video_routes.processed_result')}}" class="btn"> view results </a>
+        {% elif is_image %}
+            <button id="startProcessingImage" > Start processing </button>
+            <a href="{{url_for('image_routes.processed_result')}}" class="btn"> view results </a>
+        {% endif %}
+        
+    </div>
+    <div class="info">
+        <div id="message"></div>
+    </div>
+    <div class="info-container">
+        <div class="info">
+            <h2>Original File</h2>
+            <p>Filename: {{filename}}</p>
+            <p>File type: {{filetype}}</p>
+            <p>File size: {{filesize}}</p>
+        </div>
+       
+    </div>
+    <div>
+         
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        proccessingVideoBtn = document.getElementById('startProcessingVideo');
+        // videoElement = document.getElementById('videoPlayer');
+        processingImageBtn = document.getElementById('startProcessingImage');
+        processImage = document.getElementById('processedImage');
+        videoSource = document.getElementById('videoOutput');
+        stream = document.getElementById('stream');
+
+        if (proccessingVideoBtn) {
+            proccessingVideoBtn.addEventListener('click',  () => {
+                console.log("Processing video");
+                stream.src = "{{url_for('video_routes.uploaded_video_processed_feed')}}";
+                proccessingVideoBtn.disabled = true;
+            });
+        } 
+
+        // let file  = "{{ filename | tojson }}"
+        let file  = JSON.parse('{{ filename | tojson }}') 
+        let static_url = "{{url_for('static',filename='')}}"
+
+       
+        if (processingImageBtn) {
+            processingImageBtn.addEventListener('click', () => {
+                fetch(`/image/process_image/${file}`).then(response => {
+                    return response.json();
+                }).then(data => {
+                    console.log('Image processing response:', data);
+                    document.getElementById('message').innerHTML = data.message;
+                    processedImage.src = static_url + data.filepath;
+                    console.log(processedImage.src);
+                }).catch(error => {
+                    console.error('Error:', error);
+                }); 
+            });
+        }
+
+       
+
+        // saves the data when user tries to leave or reload the page 
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            // Send a request to stop recording when the user tries to leave or reload the page
+            fetch('/video/stop_video')
+            .then(response => {
+                return response.json();
+            }).then(data => {
+                console.log('Cleanup response:', data);
+            });
+        });
+        
+    </script>
+{% endblock %}

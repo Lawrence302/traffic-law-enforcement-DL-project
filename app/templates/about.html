@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %} About {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>About</h1>
+        <p>
+            This project is a computer vision application designed to enhance road safety by analyzing images and videos for helmet compliance and rider behavior. 
+            Using advanced object detection algorithms powered by OpenCV and related technologies, the system can:
+        </p>
+        <ul>
+            <li>Identify and annotate riders, bikes, helmets, and instances of non-compliance (e.g., no helmet).</li>
+            <li>Automatically crop and save regions of interest (ROIs) where violations occur for further analysis or reporting.</li>
+            <li>Store and organize detailed information about detected violations, including annotated images and metadata.</li>
+        </ul>
+        <p>
+            The goal of this project is to leverage computer vision techniques to support road safety initiatives, enabling automated monitoring and actionable insights 
+            for traffic law enforcement and public awareness campaigns.
+        </p>
+        <p>
+            Key Features:
+        </p>
+        <ul>
+            <li>Support for both video and image inputs.</li>
+            <li>Real-time detection and annotation of multiple objects within a frame.</li>
+            <li>Scalable and efficient processing pipeline for large datasets.</li>
+        </ul>
+        <p>
+            This project is an example of how artificial intelligence and machine learning can be applied to solve real-world challenges, ensuring better compliance and safety on roads.
+        </p>
+    </div>
+{% endblock %}

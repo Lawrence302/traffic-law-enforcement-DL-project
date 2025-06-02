@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %} Contact {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Contact Us</h1>
+    <p>If you have any questions or need support, feel free to reach out using the form below.</p>
+    
+    <form id="contactForm">
+        <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Type your message here" required></textarea>
+        </div>
+        
+        <button type="submit" class="btn">Submit</button>
+    </form>
+
+    <div id="responseMessage" style="margin-top: 20px; font-weight: bold; color: green; display: none;"></div>
+</div>
+
+<script>
+    emaile = document.getElementById('email');
+    name = document.getElementById('name');
+    message = document.getElementById('message');
+    document.getElementById('contactForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const formData = new FormData(this); // Collect form data
+
+        try {
+            const response = await fetch('/contact', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            const messageDiv = document.getElementById('responseMessage');
+
+            if (data.status === 'success') {
+                messageDiv.style.display = 'block';
+                messageDiv.textContent = data.message;
+
+                // Clear form fields
+                name.value = '';
+                email.value = '';
+                message.value = '';
+            }
+        } catch (error) {
+            alert('An error occurred while sending your message. Please try again.');
+        }
+    });
+</script>
+{% endblock %}
+

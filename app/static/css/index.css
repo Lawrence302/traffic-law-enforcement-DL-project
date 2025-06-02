@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.title{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+.hero{
+    max-height: 60vh;
+    max-width: 800px;
+    margin: auto;
+    /* border: 1px solid black; */
+}
+/* video */
+.video-container {
+    position: relative;
+   
+    width: 100%;
+    height: 100%;
+    z-index: -1; /*Ensure the video stays in the background*/
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /*Ensure the video covers the whole container */
+    pointer-events: none;  /* Prevent interaction with the video */
+}
+
+h2,h3{
+    text-align: center;
+    margin-bottom:10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.service-options-info{
+    max-width: 800px;
+    margin: auto;
+}
+
+.service-options{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 20px;
+    padding:10px;
+    /* border: 1px solid #333; */
+}
+
+.info-option{
+    /* border: 1px solid black; */
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+.info-option .know-more-btn{
+    color: blue;
+    
+}
+
+
+.option{
+    border: 1px solid black;
+    max-width: 300px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.service-options .option p{
+    margin-bottom: 15px;
+}
+
+.service-options .option .btn{
+    /* border : 1px solid black; */
+    padding: 5px 10px;
+    border-radius: 5px;
+    
+}
+
+.service-options .option a{
+   
+    text-decoration: none;
+    color: black;
+
+}
+.service-options .option .btn:hover{
+    background-color: #333;
+    color: white;
+}
+
+.last-box{
+    height: 50px;
+    /* border: 1px solid black; */
+}

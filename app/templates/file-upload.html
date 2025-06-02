@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %} File Upload {% endblock %}
+
+    <!-- link the file-uploads.css -->
+{% block head %} 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/file-upload.css') }}">
+{% endblock %} 
+  
+
+{% block content %}
+    <div class="container">
+
+        <h1>Upload File</h1>
+
+        <!-- Form for uploading the file -->
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="file">Select a file to upload:</label>
+            <input type="file" name="file" id="file" onchange="showPreview(event)" required>
+            <div class="preview-div">
+                <img id="preview-img" src=""  />
+                <video id="preview-video" controls >
+                    <source id="video-source" src="" >
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <br><br>
+            <label for="filename">Enter a custom filename (optional):</label>
+            <input type="text" name="filename" id="filename">
+            <br><br>
+            <button type="submit">Upload</button>
+        </form>
+
+        <!-- Display message here -->
+        <div id="message"></div>
+        <!-- <div>
+            <a id="process-page" href="#">Process file</a>
+        </div> -->
+    </div>
+{% endblock %}
+
+    
+{% block scripts %}
+<script>
+    const processPageBtn = document.getElementById('process-page');
+    const previewDiv = document.querySelector('.preview-div');
+    const previewImg = document.getElementById('preview-img');
+    const previewVid = document.getElementById('preview-video');
+    // fileInput = document.getElementById('file');
+    let filename = null;
+    let imageAvailable = false
+    let videoAvailable = false
+
+   showPreview = (event) => {
+        let file = event.target.files[0];
+        let src = URL.createObjectURL(file);
+        
+        if (file){
+            const fileType = file.type;
+            console.log(fileType)
+            
+            if (fileType.startsWith('image')){
+                console.log('for image', src)
+                // let preview = document.getElementById('preview-img');
+                previewVid.style.display = 'none';
+                previewImg.src = src;
+                previewImg.style.display = 'block';
+                
+            }
+            if (fileType.startsWith('video')){
+                console.log('for video', src)
+                // let preview = document.getElementById('preview-video');
+                const videoSrc = document.getElementById('video-source')  
+                previewImg.style.display = 'none';
+                videoSrc.src = src;
+                previewVid.style.display = 'block';
+
+                previewVid.load();
+            }
+        }
+          
+   }
+// Handle form submission
+// Handle form submission
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent the form from refreshing the page
+
+        // Create a FormData object to handle file upload
+        const formData = new FormData(this);
+
+        // Clear previous message
+        document.getElementById('message').innerHTML = '';
+        // Use fetch to send the form data to the Flask server
+        fetch('/upload/upload_file', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())  // Expect JSON response
+        .then(data => {
+            // If the file upload is successful, show the message
+            const messageElement = document.getElementById('message');
+            if (data.message) {
+                messageElement.innerHTML = `<p class="success">${data.message}</p>`;
+
+                // Optionally, show a link to the uploaded file
+                if (data.is_video) {
+                    
+                    let vid_name = data.output_name;
+         
+                    filename = vid_name
+                    
+                    window.location.href = `/video/upload_video_detection/${filename}`
+
+                    videoAvailable = true
+                    imageAvailable = false
+
+                } else {
+                    messageElement.innerHTML = `<p class="success">${data.message}</p>`;
+                    let img_name = data.output_name;
+                  
+                    filename = img_name
+                   
+                    window.location.href = `/image/processing_page/${filename}`
+                    imageAvailable = true;
+                    videoAvailable = false;
+                }
+            } else if (data.error) {
+                // If there's an error, show the error message
+                messageElement.innerHTML = `<p class="error">${data.error}</p>`;
+            }
+        })
+        .catch(error => {
+            // Catch any unexpected errors and show a message
+            const messageElement = document.getElementById('message');
+            messageElement.innerHTML = `<p class="error">An error occurred while uploading the file. Please try again.</p>`;
+            console.error('Error:', error);
+        });
+    });
+
+    function clearForm() {
+      document.getElementById('uploadForm').reset(); // Reset all form fields
+      
+      // Optionally clear preview
+      document.getElementById('preview-img').style.display = 'none';  // Hide image preview
+      document.getElementById('preview-video').style.display = 'none';  // Hide video preview
+      document.getElementById('file').value = '';  // Clear file input
+      document.getElementById('filename').value = '';  // Clear filename input
+    }
+
+    // Clear the form when the page loads (including after back navigation)
+    window.addEventListener('pageshow', function() {
+      clearForm();
+    });
+
+    window.onload = function() {
+    document.getElementById('uploadForm').reset();
+  };
+
+
+    
+</script>
+{% endblock %}
+
+

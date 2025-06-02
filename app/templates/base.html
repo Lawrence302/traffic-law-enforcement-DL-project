@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %} {% endblock %} </title>
+
+    <!-- css files -->
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css')}}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css')}}">
+
+    <!-- additinal scripts for child templates -->
+    {% block head %} {% endblock %}
+</head>
+<body>
+    <header>
+        {% include 'nav.html' %}
+    </header>
+    <main>
+        {% block content %} {% endblock %}
+    </main>
+    <footer>
+        <p> &copy; 2024 - All rights reserved </p>
+    </footer>
+    
+    <!-- additional scripts for child templates -->
+    {% block scripts %} {% endblock %}
+</body>
+</html>
